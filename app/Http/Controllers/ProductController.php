@@ -25,9 +25,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $products = Product::all();
+        $product = Product::all();
         $category = Category::all();
-        return view('pages.admin.products.create-product', compact('products', 'category'));
+        return view('pages.admin.products.create-product', compact('product', 'category'));
     }
 
     /**
@@ -92,7 +92,7 @@ class ProductController extends Controller
 
             $product->update($data);
 
-            return redirect()->back()->with('success', 'Product successfully updated');
+            return redirect()->route('admin.product.index')->with('success', 'Product successfully updated');
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Failed to edit product');
         }

@@ -4,18 +4,20 @@
 @section('content')
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">Edit {{ $product->name }}</h5>
+        <h5 class="card-title">Edit "{{ $product->name }}"</h5>
 
         <!-- Vertical Form -->
-        <form class="row g-3">
+        <form class="row g-3" action="{{ route('admin.product.update', $product->id) }}" method="post" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
             <div class="col-12">
                 <label for="productName" class="form-label">Product Name</label>
                 <input type="text" class="form-control" id="productName" name="name" value="{{ $product->name }}">
             </div>
-            <label class="col-sm-2 col-form-label">{{ $product->category->name }}</label>
+            <label class="col-sm-2 col-form-label">Choose Category</label>
                 <div>
                     <select class="form-select" aria-label="Default select example" name="category_id">
-                        <option selected>Choose Category</option>
+                        <option selected>{{ $product->category->name }}</option>
                         @foreach ($category as $row)
                         <option value="{{ $row->id }}">{{ $row->name }}</option>
                         @endforeach
@@ -27,7 +29,7 @@
             </div>
             <div class="mb-3">
                 <label for="productDesc" class="form-label">Product Description</label>
-                <textarea id="editor" name="description">{!! $product->description !!}</textarea>
+                <textarea id="editor" name="description" class="col-10">{!! $product->description !!}</textarea>
             </div>
             <script>
                 ClassicEditor

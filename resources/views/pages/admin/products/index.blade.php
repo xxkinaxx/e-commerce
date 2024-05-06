@@ -50,9 +50,9 @@
                                 <td>{{ Str::limit(strip_tags($row->description)) }}</td>
                                 <td>{{ $row->price }}</td>
                                 <td>
-                                    <button class="btn btn-primary" type="button">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
+                                    <a href="{{ route('admin.product.gallery.index', $row->id) }}" class="btn btn-primary">
+                                        <i class="bi bi-card-image"></i>
+                                    </a>
                                     <a href="{{ route('admin.product.edit', $row->id) }}" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
                                     <form action="{{ route('admin.product.destroy', $row->id) }}" method="post" class="d-inline">
                                         @csrf
