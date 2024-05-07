@@ -15,8 +15,11 @@
                     <li class="breadcrumb-item active">Data Product . Gallery</li>
                 </ol>
             </nav>
-            <a href="#" class="btn btn-primary"><i class="bi bi-plus-lg"></i>
-                Add Image</a>
+            <!-- Basic Modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#basicModal">
+                        <i class="bi bi-plus"></i>Add Image
+                    </button>
+                    @include('pages.admin.products.gallery.modal-create')
 
         </div><!-- End Breadcrumbs with a page title -->
 

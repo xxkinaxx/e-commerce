@@ -32,7 +32,9 @@ class ProductGalleryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            
+        ]);
     }
 
     /**
