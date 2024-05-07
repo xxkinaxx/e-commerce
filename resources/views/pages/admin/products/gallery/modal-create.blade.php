@@ -1,7 +1,7 @@
 <div class="modal fade" id="basicModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="{{ route('admin.product.gallery.store', ['product'] }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('admin.product.gallery.store', ['product']) }}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('POST')
                 <div class="modal-header">

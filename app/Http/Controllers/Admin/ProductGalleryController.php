@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductGalleryController extends Controller
 {
@@ -30,11 +32,24 @@ class ProductGalleryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Product $product)
     {
-        $this->validate($request, [
-            
-        ]);
+        try {
+            $files = $request->file('files');
+            foreach ($files as $file) {
+                // upload gambar (image)
+                $file->storeAs('public/product/gallery', $file->hashName());
+
+                // insert ke data base
+                $product->product_galleries()->create([
+                    'product_id' => $product->id,
+                    'image' => $file->hashName()
+                ]);
+                return redirect()->route('admin.product.gallery.index', $product->id)->with('success', 'Image successfully uploaded');
+            }
+        } catch (Exception $e) {
+            return redirect()->route('admin.product.gallery.index', $product->id)->with('errors', 'Failed to upload image');
+        }
     }
 
     /**
@@ -64,8 +79,19 @@ class ProductGalleryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id, Product $product)
     {
-        //
+        try {
+            // get gallery by id
+            $gallery = $product->product_galleries()->findOrFail($id);
+            Storage::delete('public/product/gallery/' . basename($gallery->image));
+
+            //delete image from storage
+            $gallery->delete();
+
+            return redirect()->route('admin.product.gallery.index', $product->id)->with('success', 'Image deleted successfully');
+        } catch (Exception $e) {
+            return redirect()->route('admin.product.gallery.index', $product->id)->with('errors', 'Failed to delete');
+        }
     }
 }

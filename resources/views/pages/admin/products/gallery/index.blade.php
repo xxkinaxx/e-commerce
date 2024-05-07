@@ -36,11 +36,21 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>img</td>
-                <th>owo</th>
-            </tr>
+            @forelse ($gallery as $row)
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>
+                        <img src="" alt="">
+                    </td>
+                    <td>
+                        
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td class="text-center" colspan="3">No Enteries yet</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 </div>
