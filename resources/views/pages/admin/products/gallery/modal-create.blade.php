@@ -1,7 +1,7 @@
 <div class="modal fade" id="basicModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="{{ route('admin.product.gallery.store', ['product']) }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('admin.product.gallery.store', $product->id) }}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('POST')
                 <div class="modal-header">
@@ -10,13 +10,14 @@
                 </div>
                 <div class="modal-body">
                     <div class="col-12">
-                        <label for="inputNanme4" class="form-label">Your Name</label>
+                        <label for="inputNanme4" class="form-label">Input Image</label>
                         <input type="file" class="form-control" id="inputNanme4" name="files[]" multiple>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
+                </div>
             </form>
         </div>
     </div>

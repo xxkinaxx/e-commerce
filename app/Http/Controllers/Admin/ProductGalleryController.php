@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\ProductGallery;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -16,7 +17,7 @@ class ProductGalleryController extends Controller
     public function index($id)
     {
         $product = Product::findOrFail($id);
-        $gallery = $product->product_galleries;
+        $gallery = $product->productGallery;
 
         return view('pages.admin.products.gallery.index', compact('product', 'gallery'));
     }
@@ -41,13 +42,14 @@ class ProductGalleryController extends Controller
                 $file->storeAs('public/product/gallery', $file->hashName());
 
                 // insert ke data base
-                $product->product_galleries()->create([
+                $product->productGallery()->create([
                     'product_id' => $product->id,
                     'image' => $file->hashName()
                 ]);
-                return redirect()->route('admin.product.gallery.index', $product->id)->with('success', 'Image successfully uploaded');
             }
+            return redirect()->route('admin.product.gallery.index', $product->id)->with('success', 'Image successfully uploaded');
         } catch (Exception $e) {
+            dd($e->getMessage());
             return redirect()->route('admin.product.gallery.index', $product->id)->with('errors', 'Failed to upload image');
         }
     }
@@ -79,14 +81,18 @@ class ProductGalleryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id, Product $product)
+    public function destroy(Product $product, ProductGallery $gallery)
     {
         try {
-            // get gallery by id
-            $gallery = $product->product_galleries()->findOrFail($id);
-            Storage::delete('public/product/gallery/' . basename($gallery->image));
+            // get data product
+            $product = $product->findOrFail($product->id);
 
-            //delete image from storage
+            // get data gallery
+            $gallery = $gallery->findOrFail($gallery->id);
+
+            // delete image
+            Storage::disk('local')->delete('public/product/gallery/' . basename($gallery->image));
+
             $gallery->delete();
 
             return redirect()->route('admin.product.gallery.index', $product->id)->with('success', 'Image deleted successfully');
