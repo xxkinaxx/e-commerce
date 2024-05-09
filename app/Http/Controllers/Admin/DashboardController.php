@@ -14,6 +14,7 @@ class DashboardController extends Controller
         $category = Category::count();
         $product = Product::count();
         $user = User::where('role', 'user')->count();
-        return view('pages.admin.index', compact('category', 'product', 'user'));
+        $users = User::where('role', 'user')->get();
+        return view('pages.admin.index', compact('category', 'product', 'user', 'users'));
     }
 }

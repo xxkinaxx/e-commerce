@@ -222,6 +222,15 @@
                             </form>
                         </li>
 
+                        <hr class="dropdown-divider">
+
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="{{route('profile.change-password')}}">
+                                <i class="ri-admin-line"></i>
+                                <span>Change Password</span>
+                            </a>
+                        </li>
+
                     </ul><!-- End Profile Dropdown Items -->
                 </li><!-- End Profile Nav -->
 

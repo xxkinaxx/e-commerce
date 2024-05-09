@@ -41,7 +41,7 @@
 <div class="section dashboard">
     <div class="row">
         <!-- Sales Card -->
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card info-card sales-card">
 
                 <div class="card-body">
@@ -52,7 +52,7 @@
                             <i class="bi bi-cart"></i>
                         </div>
                         <div class="ps-3">
-                            <h6>{{ $category }}</h6>
+                            <h6>{{ $category }} Categories</h6>
                         </div>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
             </div>
         </div><!-- End Sales Card -->
         <!-- Sales Card -->
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card info-card sales-card">
 
                 <div class="card-body">
@@ -71,7 +71,7 @@
                             <i class="bi bi-bag-fill"></i>
                         </div>
                         <div class="ps-3">
-                            <h6>{{ $product }}</h6>
+                            <h6>{{ $product }} Products</h6>
                         </div>
                     </div>
                 </div>
@@ -79,22 +79,52 @@
             </div>
         </div><!-- End Sales Card -->
         <!-- Sales Card -->
-        <div class="col-md-4">
+        <div class="col-md-12">
             <div class="card info-card sales-card">
 
                 <div class="card-body">
-                    <h5 class="card-title">User</h5>
+                    <h5 class="card-title">Total User</h5>
 
                     <div class="d-flex align-items-center">
                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                             <i class="bi bi-person-fill"></i>
                         </div>
                         <div class="ps-3">
-                            <h6>{{ $user }}</h6>
+                            <h6>{{ $user }} Users</h6>
                         </div>
                     </div>
                 </div>
-
+                <!-- Table with stripped rows -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($users as $row)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $row->name }}</td>
+                                <td>{{ $row->email }}</td>
+                                <td>
+                                    <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#confirmReset{{$row->id}}">
+                                        <i class="bi bi-exclamation-triangle"></i>
+                                        Reset Password
+                                    </button>
+                                    @include('pages.admin.include.confirm')
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="text-center">No enteries yet</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div><!-- End Sales Card -->
     </div>
