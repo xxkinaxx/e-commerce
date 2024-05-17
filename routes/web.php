@@ -13,6 +13,8 @@ Route::get('/', [FrondendController::class, 'index']);
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/detail-product/{slug}', [FrondendController::class, 'detailProduct'])->name('detail.product');
+Route::get('/detail-category/{slug}', [FrondendController::class, 'detailCategory'])->name('detail.category');
 
 Route::name('admin.')->prefix('admin')->middleware('admin')->group(function(){
     Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
@@ -32,4 +34,6 @@ Route::name('user.')->prefix('user')->middleware('user')->group(function(){
 Route::middleware('auth')->group(function() {
     Route::get('/change-password', [ProfileController::class, 'changePassword'])->name('profile.change-password');
     Route::put('/update-password', [ProfileController::class, 'updatePassword'])->name('profile.update-password');
+    Route::get('/cart', [FrondendController::class, 'cart'])->name('cart');
+    Route::post('/cart/{id}', [App\Http\Controllers\Frontend\FrondendController::class, 'addToCart'])->name('cart.add');
 });
