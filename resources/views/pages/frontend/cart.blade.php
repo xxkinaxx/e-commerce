@@ -55,7 +55,7 @@
                 <div class="flex flex-start flex-wrap items-center mb-4 -mx-4" data-row="1">
                     <div class="px-4 flex-none">
                         <div class="" style="width: 90px; height: 90px">
-                            <img src="{{ $row->product->productGallery()->exists() ? url('storage/product/gallery', $row->product->productGallery->first()->image) : ''}}" alt="chair-1" class="object-cover rounded-xl w-full h-full" />
+                            <img src="{{ $row->product->productGallery()->exists() ? url('storage/product/gallery', $row->product->productGallery->first()->image) : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mN88B8AAsUB4ZtvXtIAAAAASUVORK5CYII=' }}" alt="chair-1" class="object-cover rounded-xl w-full h-full" />
                         </div>
                     </div>
                     <div class="px-4 w-auto flex-1 md:w-5/12">
@@ -76,9 +76,13 @@
                     </div>
                     <div class="px-4 w-2/12">
                         <div class="text-center">
-                            <button data-delete-item="1" class="text-red-600 border-none focus:outline-none px-3 py-1">
+                            <form action="{{ route('cart.delete', $row->id) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button class="text-red-600 border-none focus:outline-none px-3 py-1" type="submit">
                                 X
-                            </button>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -126,11 +130,6 @@
                                         <img src="./images/content/logo-fedex.svg" alt="Logo Fedex" class="object-contain max-h-full" />
                                     </button>
                                 </div>
-                                <div class="px-2 w-6/12 h-24 mb-4">
-                                    <button type="button" data-value="dhl" data-name="courier" class="border border-gray-200 focus:border-red-200 flex items-center justify-center rounded-xl bg-white w-full h-full focus:outline-none">
-                                        <img src="./images/content/logo-dhl.svg" alt="Logo dhl" class="object-contain max-h-full" />
-                                    </button>
-                                </div>
                             </div>
                         </div>
 
@@ -140,21 +139,6 @@
                                 <div class="px-2 w-6/12 h-24 mb-4">
                                     <button type="button" data-value="midtrans" data-name="payment" class="border border-gray-200 focus:border-red-200 flex items-center justify-center rounded-xl bg-white w-full h-full focus:outline-none">
                                         <img src="./images/content/logo-midtrans.png" alt="Logo midtrans" class="object-contain max-h-full" />
-                                    </button>
-                                </div>
-                                <div class="px-2 w-6/12 h-24 mb-4">
-                                    <button type="button" data-value="mastercard" data-name="payment" class="border border-gray-200 focus:border-red-200 flex items-center justify-center rounded-xl bg-white w-full h-full focus:outline-none">
-                                        <img src="./images/content/logo-mastercard.svg" alt="Logo mastercard" />
-                                    </button>
-                                </div>
-                                <div class="px-2 w-6/12 h-24 mb-4">
-                                    <button type="button" data-value="bitcoin" data-name="payment" class="border border-gray-200 focus:border-red-200 flex items-center justify-center rounded-xl bg-white w-full h-full focus:outline-none">
-                                        <img src="./images/content/logo-bitcoin.svg" alt="Logo bitcoin" class="object-contain max-h-full" />
-                                    </button>
-                                </div>
-                                <div class="px-2 w-6/12 h-24 mb-4">
-                                    <button type="button" data-value="american-express" data-name="payment" class="border border-gray-200 focus:border-red-200 flex items-center justify-center rounded-xl bg-white w-full h-full focus:outline-none">
-                                        <img src="./images/content/logo-american-express.svg" alt="Logo american-logo-american-express" />
                                     </button>
                                 </div>
                             </div>

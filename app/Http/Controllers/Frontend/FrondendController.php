@@ -8,6 +8,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
+use App\Models\Transaction;
 
 class FrondendController extends Controller
 {
@@ -37,7 +38,7 @@ class FrondendController extends Controller
     public function cart()
     {
         $category = Category::select('id', 'name', 'slug')->latest()->limit(8)->get();
-        $cart = Cart::with('product')->where('user_id', auth()->user()->id)->get();
+        $cart = Cart::with('product')->where('user_id', auth()->user()->id)->latest()->get();
         return view('pages.frontend.cart', compact('category', 'cart'));
     }
 
@@ -50,6 +51,48 @@ class FrondendController extends Controller
             ]);
 
             return redirect()->route('cart');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Somethings Wrong');
+        }
+    }
+
+    public function deleteFromCart($id)
+    {
+        try{
+            Cart::findOrFail($id)->delete();
+
+            return redirect()->route('cart');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Somethings Wrong');
+        }
+    }
+
+    public function checkout(Request $request)
+    {
+        try {
+            $data = $request->all();
+
+            // get data cart
+            $cart = Cart::with('product')->where('user_id', auth()->user()->id)->latest()->get();
+            // add data to transaction
+            $data['user_id'] = auth()->user()->id;
+            $data['total_price'] = $cart->sum('product.price');
+
+            // create tramsaction
+            $transaction = Transaction::create($data);
+
+            // add data to transaction item
+            foreach($cart as $item){
+                $item[] = Transaction::create([
+                    'transaction_id' => $transaction->id,
+                    'product_id' => $item->product_id,
+                    'user_id' => $item->user_id
+                ]);
+            }
+
+            // delete cart
+            Cart::where('user_id', auth()->user()->id)->delete();
+
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Somethings Wrong');
         }

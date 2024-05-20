@@ -32,15 +32,15 @@
                 <div class="thumbnail">
                     <div class="px-2">
                         @foreach ($product->productGallery as $item)
-                        <div class="item {{ $loop->first }}" data-img="{{ $item->exists() ? url('storage/product/gallery', $item->image) : '' }}">
-                            <img src="{{ $item->exists() ? url('storage/product/gallery', $item->image) : '' }}" alt="front" class="object-cover w-full h-full rounded-lg" />
+                        <div class="item {{ $loop->first }}" data-img="{{ $item->exists() ? url('storage/product/gallery', $item->image) : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mN88B8AAsUB4ZtvXtIAAAAASUVORK5CYII='  }}">
+                            <img src="{{ $item->exists() ? url('storage/product/gallery', $item->image) : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mN88B8AAsUB4ZtvXtIAAAAASUVORK5CYII='  }}" alt="front" class="object-cover w-full h-full rounded-lg" />
                         </div>
                         @endforeach
                     </div>
                 </div>
                 <div class="preview">
                     <div class="item rounded-lg h-full overflow-hidden">
-                        <img src="{{ $product->productGallery()->exists() ? url('storage/product/gallery', $product->productGallery->first()->image) : ''}}" alt="front" class="object-cover w-full h-full rounded-lg" />
+                        <img src="{{ $product->productGallery()->exists() ? url('storage/product/gallery', $product->productGallery->first()->image) : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mN88B8AAsUB4ZtvXtIAAAAASUVORK5CYII=' }}" alt="front" class="object-cover w-full h-full rounded-lg" />
                     </div>
                 </div>
             </div>
@@ -86,7 +86,7 @@
             <div class="px-3 flex-none" style="width: 320px">
                 <div class="rounded-xl p-4 pb-8 relative bg-white">
                     <div class="rounded-xl overflow-hidden card-shadow w-full h-36">
-                        <img src="{{ $row->productGallery()->exists() ? url('storage/product/gallery', $row->productGallery->first()->image) : ''}}" alt="" class="w-full h-full object-cover object-center" />
+                        <img src="{{ $row->productGallery()->exists() ? url('storage/product/gallery', $row->productGallery->first()->image) : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mN88B8AAsUB4ZtvXtIAAAAASUVORK5CYII=' }}" alt="" class="w-full h-full object-cover object-center" />
                     </div>
                     <h5 class="text-lg font-semibold mt-4">{{ $row->name }}</h5>
                     <span class="">IDR {{ number_format($row->price) }}</span>

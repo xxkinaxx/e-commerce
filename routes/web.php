@@ -36,4 +36,5 @@ Route::middleware('auth')->group(function() {
     Route::put('/update-password', [ProfileController::class, 'updatePassword'])->name('profile.update-password');
     Route::get('/cart', [FrondendController::class, 'cart'])->name('cart');
     Route::post('/cart/{id}', [App\Http\Controllers\Frontend\FrondendController::class, 'addToCart'])->name('cart.add');
+    Route::delete('/delete-cart/{id}', [App\Http\Controllers\Frontend\FrondendController::class, 'deleteFromCart'])->name('cart.delete');
 });

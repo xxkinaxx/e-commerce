@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('courier');
             $table->string('payment');
             $table->string('payment_url');
-            $table->string('status')->default('pending');
+            $table->string('status')->default('PENDING');
             $table->string('total_price');
             $table->timestamps();
         });
