@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Transaction;
+use App\Models\TransactionItem;
+use Midtrans\Config;
+use Midtrans\Snap;
 
 class FrondendController extends Controller
 {
@@ -70,30 +73,70 @@ class FrondendController extends Controller
     public function checkout(Request $request)
     {
         try {
+            // request data
             $data = $request->all();
 
-            // get data cart
-            $cart = Cart::with('product')->where('user_id', auth()->user()->id)->latest()->get();
-            // add data to transaction
-            $data['user_id'] = auth()->user()->id;
-            $data['total_price'] = $cart->sum('product.price');
+            // get data cart user
+            $cart = Cart::with('product')->where('user_id', auth()->user()->id)->get();
 
-            // create tramsaction
-            $transaction = Transaction::create($data);
+            // create transaction
+            $transaction = Transaction::create([
+                'user_id' => auth()->user()->id,
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'address' => $data['address'],
+                'phone'  => $data['phone'],
+                'total_price' => $cart->sum('product.price')
+            ]);
 
-            // add data to transaction item
+            // create transaction item
             foreach($cart as $item){
-                $item[] = Transaction::create([
-                    'transaction_id' => $transaction->id,
+                TransactionItem::create([
+                    'user_id' => auth()->user()->id,
                     'product_id' => $item->product_id,
-                    'user_id' => $item->user_id
+                    'transaction_id' => $transaction->id
                 ]);
             }
 
             // delete cart
             Cart::where('user_id', auth()->user()->id)->delete();
 
+            // setting midtrans
+            // use Midtrans\Config;
+            // use Midtrans\Snap;
+            Config::$serverKey = config('services.midtrans.serverKey');
+            Config::$clientKey = config('services.midtrans.clientKey');
+            Config::$isProduction = config('services.midtrans.isProduction');
+            Config::$isSanitized = config('services.midtrans.isSanitized');
+            Config::$is3ds = config('services.midtrans.is3ds');
+
+            // setup variable for midtrans
+            $midtrans = [
+                'transaction_detail' => [
+                    'order_id' => 'EK' . $transaction->id,
+                    'gross_amount' => (int) $transaction->total_price // error
+                ],
+                'customer_details' => [
+                    'first_name' => $transaction->name,
+                    'email' => $transaction->email,
+                    'phone' => $transaction->phone
+                ],
+                'enable_payments' => ['gopay', 'bank_transfer'],
+                'vtweb' => []
+            ];
+
+            // create payment url
+            $paymentUrl = Snap::createTransaction($midtrans)->redirect_url;
+
+            // update payment url
+            $transaction->update([
+                'payment_url' => $paymentUrl
+            ]);
+
+            return redirect($paymentUrl);
+
         } catch (Exception $e) {
+            dd($e);
             return redirect()->back()->with('error', 'Somethings Wrong');
         }
     }
