@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\Frontend;
 
 use Exception;
+use Midtrans\Snap;
+use App\Models\Cart;
+use Midtrans\Config;
 use App\Models\Product;
 use App\Models\Category;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\Cart;
 use App\Models\Transaction;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Models\TransactionItem;
-use Midtrans\Config;
-use Midtrans\Snap;
+use App\Http\Controllers\Controller;
 
 class FrondendController extends Controller
 {
@@ -83,6 +84,7 @@ class FrondendController extends Controller
             $transaction = Transaction::create([
                 'user_id' => auth()->user()->id,
                 'name' => $data['name'],
+                'slug' => Str::slug($data['name']),
                 'email' => $data['email'],
                 'address' => $data['address'],
                 'phone'  => $data['phone'],
@@ -112,9 +114,9 @@ class FrondendController extends Controller
 
             // setup variable for midtrans
             $midtrans = [
-                'transaction_detail' => [
+                'transaction_details' => [
                     'order_id' => 'EK' . $transaction->id,
-                    'gross_amount' => (int) $transaction->total_price // error
+                    'gross_amount' => (int) $transaction->total_price
                 ],
                 'customer_details' => [
                     'first_name' => $transaction->name,
@@ -136,7 +138,7 @@ class FrondendController extends Controller
             return redirect($paymentUrl);
 
         } catch (Exception $e) {
-            dd($e);
+            dd($e->getMessage());
             return redirect()->back()->with('error', 'Somethings Wrong');
         }
     }
