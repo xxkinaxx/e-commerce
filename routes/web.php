@@ -23,12 +23,14 @@ Route::name('admin.')->prefix('admin')->middleware('admin')->group(function(){
     Route::resource('/product.gallery', ProductGalleryController::class)->only('index', 'store', 'destroy');
     Route::put('/reset-password/{id}', [ProfileController::class, 'resetPassword'])->name('resetPassword');
     Route::resource('/transaction', TransactionController::class);
-    Route::resource('/my-transaction', MyTransactionController::class)->only('index', 'show');
+    Route::resource('/my-transaction', MyTransactionController::class)->only('index');
+    Route::get('/my-transaction/{id}/{slug}', [MyTransactionController::class, 'detailTransaction'])->name('my-transaction.detail');
 });
 
 Route::name('user.')->prefix('user')->middleware('user')->group(function(){
     Route::get('/dashboard', [\App\Http\Controllers\User\DashboardController::class, 'index'])->name('dashboard');
-    Route::resource('/my-transaction', MyTransactionController::class)->only('index', 'show');
+    Route::resource('/my-transaction', MyTransactionController::class)->only('index');
+    Route::get('/my-transaction/{id}/{slug}', [MyTransactionController::class, 'detailTransaction'])->name('my-transaction.detail');
 });
 
 Route::middleware('auth')->group(function() {

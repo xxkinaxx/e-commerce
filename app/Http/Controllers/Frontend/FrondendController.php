@@ -84,7 +84,7 @@ class FrondendController extends Controller
             $transaction = Transaction::create([
                 'user_id' => auth()->user()->id,
                 'name' => $data['name'],
-                'slug' => Str::slug($data['name']),
+                'slug' => Str::slug($data['name']) . '-' . time(),
                 'email' => $data['email'],
                 'address' => $data['address'],
                 'phone'  => $data['phone'],

@@ -14,7 +14,7 @@ class MyTransactionController extends Controller
      */
     public function index()
     {
-        $mytransaction = Transaction::with(['user'])->where('user_id', auth()->user()->id)->get();
+        $mytransaction = Transaction::with(['user'])->where('user_id', auth()->user()->id)->latest()->get();
 
         return view('pages.admin.my-transaction.index', compact('mytransaction'));
     }
@@ -38,10 +38,9 @@ class MyTransactionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($name)
+    public function show(string $id)
     {
-        $transactionItem = TransactionItem::with('product')->where('transaction_id', 'name', $name)->get();
-        return view('pages.admin.transaction.show', compact('transactionItem'));
+        // 
     }
 
     /**
@@ -66,5 +65,12 @@ class MyTransactionController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function detailTransaction ($slug, $id)
+    {
+        // show data by slug & id
+        $transaction = Transaction::where('slug', $slug)->where('id', $id)->firstOrFail();
+        return view('pages.admin.transaction.show', compact('transaction'));
     }
 }
