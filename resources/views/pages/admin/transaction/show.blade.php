@@ -53,7 +53,7 @@
                     <td>{{ $transaction->address }}</td>
                 </tr>
                 <tr>
-                    <th scope="row">Corier</th>
+                    <th scope="row">Courier</th>
                     <td>{{ $transaction->courier }}</td>
                 </tr>
                 <tr>

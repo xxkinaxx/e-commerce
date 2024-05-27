@@ -15,8 +15,12 @@ class MyTransactionController extends Controller
     public function index()
     {
         $mytransaction = Transaction::with(['user'])->where('user_id', auth()->user()->id)->latest()->get();
+        $expired = Transaction::where('user_id', auth()->user()->id)->where('status', 'EXPIRED')->count();
+        $settlement = Transaction::where('user_id', auth()->user()->id)->where('status', 'SETTLEMENT')->count();
+        $pending = Transaction::where('user_id', auth()->user()->id)->where('status', 'PENDING')->count();
+        $success = Transaction::where('user_id', auth()->user()->id)->where('status', 'SUCCESS')->count();
 
-        return view('pages.admin.my-transaction.index', compact('mytransaction'));
+        return view('pages.admin.my-transaction.index', compact('mytransaction', 'expired', 'settlement', 'pending', 'success'));
     }
 
     /**

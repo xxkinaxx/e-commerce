@@ -21,6 +21,86 @@
         </div>
     </div>
 
+    <div class="section dashboard">
+        <div class="row">
+            <!-- Sales Card -->
+            <div class="col-md-3">
+                <div class="card info-card sales-card">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Total Pending</h5>
+
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-cart"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>{{ $pending }}</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div><!-- End Sales Card -->
+            <!-- Sales Card -->
+            <div class="col-md-3">
+                <div class="card info-card sales-card">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Total Settlement</h5>
+
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-cart"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>{{ $settlement }}</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div><!-- End Sales Card -->
+            <!-- Sales Card -->
+            <div class="col-md-3">
+                <div class="card info-card sales-card">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Total Expired</h5>
+
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-cart"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>{{ $expired }}</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div><!-- End Sales Card -->
+            <div class="col-md-3">
+                <div class="card info-card sales-card">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Total Success</h5>
+
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-cart"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>{{ $success }}</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div><!-- End Sales Card -->
+        </div>
+    </div>
+
     <div class="card">
         <div class="card-body">
             <div class="card-title"><i class="bi bi-cart"></i> Transaction list</div>
@@ -54,45 +134,57 @@
                             <span class="badge bg-warning text-uppercase">Pending</span>
                             @elseif ($row->status == 'SETTLEMENT')
                             <span class="badge bg-success text-uppercase">Settlement</span>
+                            @else
+                            <span class="badge bg-success text-uppercase">Success</span>
                             @endif
                         </td>
                         <td>
                             @if ($row->payment_url == NULL)
-                                <span>NULL</span>
+                            <span>NULL</span>
                             @else
                             <a href="{{ $row->payment_url }}">Click here</a>
                             @endif
                         </td>
                         <td>Rp. {{ number_format($row->total_price) }}</td>
                         <td>
-                            <!-- Vertically centered Modal -->
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailModal{{$row->id}}">
-                                Detail
+                            <!-- Basic Modal -->
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal{{ $row->id }}">
+                                <i class="bi bi-pencil-square"></i> Edit
                             </button>
-                            <div class="modal fade" id="detailModal{{$row->id}}" tabindex="-1">
-                                <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal fade" id="editModal{{ $row->id }}" tabindex="-1">
+                                <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title">Transaction Details</h5>
+                                            <h5 class="modal-title">{{ $row->name }} - {{ $row->phone }}</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
-                                        <div class="modal-body">
-                                            <p>Transaction id : {{ $row->id }}</p>
-                                            <p>Reciever Name : {{ $row->name }}</p>
-                                            <p>Email : {{ $row->email }}</p>
-                                            <p>Phone : {{ $row->phone }}</p>
-                                            <p>Address : {{ $row->address }}</p>
-                                            <p>Payment : {{ $row->payment }}</p>
-                                            <p>Payment Url : <a href="{{ $row->payment_url }}">Click here</a></p>
-                                            <p>Status : {{ $row->status }}</p>
-                                            <p>Total Price : Rp. {{ number_format($row->total_price) }}</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        </div>
+                                        <form action="{{ route('admin.transaction.update', $row->id) }}" method="post">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="modal-body">
+                                                <div class="row mb-3">
+                                                    <label class="col-sm-2 col-form-label">Select Status</label>
+                                                    <div class="col-sm-10">
+                                                        <select class="form-select" aria-label="Default select example" name="status">
+                                                            <option selected>Open this select menu</option>
+                                                            <option value="PENDING">Pending</option>
+                                                            <option value="SETTLEMENT">Settlement</option>
+                                                            <option value="EXPIRED">Expired</option>
+                                                            <option value="SUCCESS">Success</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
-                            </div><!-- End Vertically centered Modal-->
+                            </div><!-- End Basic Modal-->
+                            <a href="{{ route('admin.my-transaction.detail', [$row->slug, $row->id]) }}" class="btn btn-primary">
+                            <i class="bi bi-eye"></i> Detail</a>
                         </td>
                     </tr>
                     @empty
