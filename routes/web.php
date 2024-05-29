@@ -43,44 +43,10 @@ Route::middleware('auth')->group(function() {
     Route::post('/checkout', [FrondendController::class, 'checkout'])->name('checkout');
 });
 
-// storage link
-Route::get('/storage-link', function(){
-    Artisan::call('storage:link');
+// Route::Artisan Call
+Route::get('/artisan-call', function(){
+    Artisan::call('storage:link'); // storage link
+    Artisan::call('route:clear'); // route clear
+    Artisan::call('config:clear'); // config clear
     return 'success';
-});
-
-// config cache
-Route::get('/config-cache', function(){
-    Artisan::call('config:cache');
-    return 'config:cache berhasil dijalankan';
-});
-
-// config clear
-Route::get('/config-clear', function(){
-    Artisan::call('config:clear');
-    return 'config:clear berhasil dijalankan';
-});
-
-// view clear
-Route::get('/view-clear', function(){
-    Artisan::call('view:clear');
-    return 'view:clear berhasil dijalankan';
-});
-
-// view cache
-Route::get('/view-cache', function(){
-    Artisan::call('view:cache');
-    return 'view:cache berhasil dijalankan';
-});
-
-// route clear
-Route::get('/route-clear', function(){
-    Artisan::call('route:clear');
-    return 'route:clear berhasil dijalankan';
-});
-
-// route cache
-Route::get('/route-cache', function(){
-    Artisan::call('route:cache');
-    return 'route:cache berhasil dijalankan';
 });
