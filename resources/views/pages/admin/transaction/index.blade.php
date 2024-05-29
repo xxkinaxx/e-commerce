@@ -13,7 +13,6 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                         <li class="breadcrumb-item" class="active">Transaction</li>
-                        <li class="breadcrumb-item">My Transaction</li>
                     </ol>
                 </nav>
             </div><!-- End Breadcrumbs with a page title -->
@@ -133,7 +132,7 @@
                             @elseif ($row->status == 'PENDING')
                             <span class="badge bg-warning text-uppercase">Pending</span>
                             @elseif ($row->status == 'SETTLEMENT')
-                            <span class="badge bg-success text-uppercase">Settlement</span>
+                            <span class="badge bg-info text-uppercase">Settlement</span>
                             @else
                             <span class="badge bg-success text-uppercase">Success</span>
                             @endif

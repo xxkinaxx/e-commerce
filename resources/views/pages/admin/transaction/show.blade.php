@@ -1,11 +1,11 @@
 @extends('layouts.parent')
 
-@section('title', 'My Transaction')
+@section('title', 'Detail Transaction')
 
 @section('content')
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">My Transaction</h5>
+        <h5 class="card-title">Detail Transaction</h5>
 
         <nav>
             <ol class="breadcrumb">
@@ -15,7 +15,7 @@
                 <li class="breadcrumb-item"><a href="{{ route('user.dashboard') }}">Dashboard</a></li>
                 @endif
                 <li class="breadcrumb-item"><a href="#">Transaction</a></li>
-                <li class="breadcrumb-item active">My Transaction</li>
+                <li class="breadcrumb-item active">Detail Transaction</li>
             </ol>
         </nav>
     </div>

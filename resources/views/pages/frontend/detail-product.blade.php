@@ -90,7 +90,7 @@
                     </div>
                     <h5 class="text-lg font-semibold mt-4">{{ $row->name }}</h5>
                     <span class="">IDR {{ number_format($row->price) }}</span>
-                    <a href="details.html" class="stretched-link">
+                    <a href="{{ route('detail.product', $row->slug) }}" class="stretched-link">
                         <!-- fake children -->
                     </a>
                 </div>

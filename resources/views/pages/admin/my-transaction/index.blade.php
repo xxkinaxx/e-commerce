@@ -117,7 +117,7 @@
                             @elseif ($row->status == 'PENDING')
                             <span class="badge bg-warning text-uppercase">Pending</span>
                             @elseif ($row->status == 'SETTLEMENT')
-                            <span class="badge bg-success text-uppercase">Settlement</span>
+                            <span class="badge bg-info text-uppercase">Settlement</span>
                             @else
                             <span class="badge bg-success text-uppercase">Success</span>
                             @endif
